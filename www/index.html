@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>VOCALOID</title>
+<link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+  <div class="container">
+    <div class="full-width text-container">
+      <input type="text" class="text-lyric" placeholder="type your lyric here!">
+    </div>
+    <div class="full-width step-sequencer">
+      step sequencer
+    </div>
+    <div class="half-width controls">
+      synth options
+    </div>
+    <div class="half-width controls">
+      TTS options
+    </div>
+    <div class="half-width controls">
+      <button class="btn play-btn">Play</button>
+      <button class="btn record-btn">Record</button>
+    </div>
+    <div class="half-width controls">
+      <form class="js-main-controls">
+        <input type="number" name="bpm" value="120" min="1" max="1">
+        <select name="tonic">
+          <option value="C" selected>C</option>
+          <option value="C#">C#</option>
+          <option value="D">D</option>
+          <option value="Eb">Eb</option>
+          <option value="F">F</option>
+          <option value="F#">F#</option>
+          <option value="G">G</option>
+          <option value="Ab">Ab</option>
+          <option value="A">A</option>
+          <option value="Bb">Bb</option>
+          <option value="B">B</option>
+        </select>
+        <select name="key">
+          <option value="Major" selected>Major</option>
+          <option value="Minor">Minor</option>
+          <option value="PentMaj">Pent Maj</option>
+          <option value="PentMin">Pent Min</option>
+        </select>
+      </form>
+    </div>
+  </div>
+  <script src="bundle.js"></script>
+</body>
+</html>
