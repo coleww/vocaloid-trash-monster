@@ -12,6 +12,7 @@ html {
 
 .container {
   width: 640px;
+  border: 1px solid black;
 }
 
 .full-width {
@@ -19,5 +20,10 @@ html {
 }
 
 .half-width {
-  width: 50%;
+  width: 45%;
+  display: inline-block;
+}
+
+input[type="number"] {
+  width: 50px;
 }
