@@ -1,6 +1,11 @@
+var $ = require('jquery')
+var playLine = require('./utils/playLine')
+var AudioContext = window.AudioContext || window.webkitAudioContext
+var ac = new AudioContext()
 
-
-$('form').serializeArray()
+var volume = ac.createGain()
+volume.connect(ac.destination)
+// $('form').serializeArray()
 // =>
 // [
 //   {"name":"foo","value":"1"},
@@ -9,3 +14,7 @@ $('form').serializeArray()
 // ]
 
 // play button => calls playLine, passes it all the data
+var $textEl = $('.text-lyric')
+$('.play-btn').click(function () {
+  playLine(ac, volume, $textEl.val(), {synth: {}, voice: {}})
+})
