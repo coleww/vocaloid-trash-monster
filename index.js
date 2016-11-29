@@ -18,3 +18,4 @@ var $textEl = $('.text-lyric')
 $('.play-btn').click(function () {
   playLine(ac, volume, $textEl.val(), {synth: {}, voice: {}})
 })
+
