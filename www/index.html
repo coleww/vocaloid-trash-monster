@@ -14,7 +14,11 @@
       step sequencer
     </div>
     <div class="half-width controls">
-      synth options
+      <form class="js-synth-controls">
+        <label>mod: <input name="modulatorGain" type="range" value="1.0" min="0.0" max="4.0" step="0.01" /></label><br />
+        <label>osc: <input name="oscillatorGain" type="range" value="1.0" min="0.0" max="2.0" step="0.01" /></label><br />
+        <label>noise: <input name="noiseGain" type="range" value="0.22" min="0.0" max="2.0" step="0.01" /></label>
+      </form>
     </div>
     <div class="half-width controls">
       TTS options

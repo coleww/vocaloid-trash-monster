@@ -27,7 +27,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-module.exports = function (audioContext, modulatorBuffer) {
+module.exports = function (audioContext, modulatorBuffer, options) {
   var CANVAS_WIDTH = 582;
   var CANVAS_HEIGHT = 150;
   var GAINS_CANVAS_HEIGHT = 100;
@@ -43,13 +43,13 @@ module.exports = function (audioContext, modulatorBuffer) {
   var carrierInput = null;
 
   var modulatorGain = null;
-  var modulatorGainValue = 1.0;
+  var modulatorGainValue = options.modulatorGain;
 
   // noise node added to the carrier signal
   var noiseBuffer = null;
   var noiseNode = null;
   var noiseGain = null;
-  var noiseGainValue = 0.2;
+  var noiseGainValue = options.noiseGain;
 
   // Carrier sample gain
   var carrierSampleNode = null;
@@ -60,7 +60,7 @@ module.exports = function (audioContext, modulatorBuffer) {
   var oscillatorNode = null;
   var oscillatorType = 'square';   // CUSTOM
   var oscillatorGain = null;
-  var oscillatorGainValue = 1.0;
+  var oscillatorGainValue = options.oscillatorGain;
   var oscillatorDetuneValue = 0;
   var FOURIER_SIZE = 2048;
   var wavetable = null;
@@ -553,12 +553,17 @@ module.exports = function (audioContext, modulatorBuffer) {
     modulatorNode.connect( modulatorGain );
     modulatorGain.connect( modulatorInput );
     modulatorNode.start(audioContext.currentTime);
-    console.log('whooooo')
+    // console.log('whooooo')
 
-    setInterval(function () {
+    var interval = setInterval(function () {
       oscillatorNode.frequency.value = [440, 493.88, 523.25, 587.33, 659.25, 698.46][~~(Math.random() * 6)] / 4
       console.log('yep')
     }, 500)
+
+    setTimeout(function () {
+      clearInterval(interval)
+      console.log('stahp it')
+    }, modulatorNode.buffer.duration * 1000 + 100)
     // window.requestAnimationFrame( updateAnalysers );
     // endOfModulatorTimer = window.setTimeout( vocode, modulatorNode.buffer.duration * 1000 + 20 );
   }

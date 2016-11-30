@@ -16,6 +16,15 @@ volume.connect(ac.destination)
 // play button => calls playLine, passes it all the data
 var $textEl = $('.text-lyric')
 $('.play-btn').click(function () {
-  playLine(ac, volume, $textEl.val(), {synth: {}, voice: {}})
+  var synthOptions = $('.js-synth-controls').serializeArray()
+  playLine(ac, volume, $textEl.val(), {synth: form2Obj(synthOptions), voice: {}})
 })
 
+
+function form2Obj(arr) {
+
+  return arr.reduce(function (acc, el) {
+    acc[el.name] = el.value
+    return acc
+  }, {})
+}
