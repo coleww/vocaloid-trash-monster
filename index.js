@@ -1,5 +1,6 @@
 var $ = require('jquery')
-var playLine = require('./utils/playLine')
+var vocoder = require('./utils/vocoder')
+var tts = require('./utils/tts')
 var AudioContext = window.AudioContext || window.webkitAudioContext
 var ac = new AudioContext()
 
@@ -16,8 +17,19 @@ volume.connect(ac.destination)
 // play button => calls playLine, passes it all the data
 var $textEl = $('.text-lyric')
 $('.play-btn').click(function () {
-  var synthOptions = $('.js-synth-controls').serializeArray()
-  playLine(ac, volume, $textEl.val(), {synth: form2Obj(synthOptions), voice: {}})
+  var synthOptions = form2Obj($('.js-synth-controls').serializeArray())
+  var voiceOptions = {}
+  tts($textEl.val(), ac, voiceOptions, function (buffer) {
+
+    // synth.start(ac.currentTime)
+    vocoder(ac, buffer, synthOptions)()
+    // var recorder
+    // if (options.record) {
+    //   recorder = recordLoop(destination, line)
+    // }
+    // synth.onEnd = recorder
+    // vocoded()
+  })
 })
 
 
