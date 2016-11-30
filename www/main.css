@@ -27,3 +27,7 @@ html {
 input[type="number"] {
   width: 50px;
 }
+
+.text-lyric {
+  width: 500px;
+}

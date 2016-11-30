@@ -5,7 +5,8 @@ meSpeak.loadVoice(require("mespeak/voices/en/en-us.json"))
 
 module.exports = function (line, ac, options, cb) {
   // TODO: ADD OPTIONS TO THE THINGY
-  var stream = meSpeak.speak(line, {rawdata: "default"})
+  console.log(options)
+  var stream = meSpeak.speak(line, Object.assign({rawdata: "default"}, options))
   ac.decodeAudioData(stream, function (audioData) {
     cb(audioData)
   })

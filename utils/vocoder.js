@@ -27,7 +27,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-module.exports = function (audioContext, modulatorBuffer, options) {
+module.exports = function (audioContext, synth, destination) {
   var CANVAS_WIDTH = 582;
   var CANVAS_HEIGHT = 150;
   var GAINS_CANVAS_HEIGHT = 100;
@@ -43,13 +43,13 @@ module.exports = function (audioContext, modulatorBuffer, options) {
   var carrierInput = null;
 
   var modulatorGain = null;
-  var modulatorGainValue = options.modulatorGain;
+  var modulatorGainValue = 1.0;
 
   // noise node added to the carrier signal
   var noiseBuffer = null;
   var noiseNode = null;
   var noiseGain = null;
-  var noiseGainValue = options.noiseGain;
+  var noiseGainValue = 0.22;
 
   // Carrier sample gain
   var carrierSampleNode = null;
@@ -60,7 +60,7 @@ module.exports = function (audioContext, modulatorBuffer, options) {
   var oscillatorNode = null;
   var oscillatorType = 'square';   // CUSTOM
   var oscillatorGain = null;
-  var oscillatorGainValue = options.oscillatorGain;
+  var oscillatorGainValue = 1.0;
   var oscillatorDetuneValue = 0;
   var FOURIER_SIZE = 2048;
   var wavetable = null;
@@ -184,7 +184,7 @@ module.exports = function (audioContext, modulatorBuffer, options) {
     hpFilterGain.gain.value = 0.0;
 
     hpFilter.connect( hpFilterGain );
-    hpFilterGain.connect( audioContext.destination );
+    hpFilterGain.connect( destination );
 
     //clear the arrays
     modFilterBands.length = 0;
@@ -199,7 +199,7 @@ module.exports = function (audioContext, modulatorBuffer, options) {
     bandAnalysers.length = 0;
 
     var outputGain = audioContext.createGain();
-    outputGain.connect(audioContext.destination);
+    outputGain.connect(destination);
 
     var rectifierCurve = new Float32Array(65536);
     for (var i=-32768; i<32768; i++)
@@ -415,19 +415,8 @@ module.exports = function (audioContext, modulatorBuffer, options) {
     // The wavetable signal needs a boost.
     wavetableSignalGain = audioContext.createGain();
 
-    oscillatorNode = audioContext.createOscillator();
-    if (oscillatorType === 4) { // wavetable
-      oscillatorNode.setPeriodicWave ?
-      oscillatorNode.setPeriodicWave(wavetable) :
-      oscillatorNode.setWaveTable(wavetable);
-      wavetableSignalGain.gain.value = WAVETABLEBOOST;
-    } else {
-      oscillatorNode.type = oscillatorType;
-      wavetableSignalGain.gain.value = SAWTOOTHBOOST;
-    }
-    oscillatorNode.frequency.value = 440;
-    oscillatorNode.detune.value = oscillatorDetuneValue;
-    oscillatorNode.connect(wavetableSignalGain);
+    wavetableSignalGain.gain.value = SAWTOOTHBOOST;
+    synth.connect(wavetableSignalGain);
 
     oscillatorGain = audioContext.createGain();
     oscillatorGain.gain.value = oscillatorGainValue;
@@ -443,7 +432,6 @@ module.exports = function (audioContext, modulatorBuffer, options) {
     noiseNode.connect(noiseGain);
 
     noiseGain.connect(output);
-    oscillatorNode.start(audioContext.currentTime);
     noiseNode.start(audioContext.currentTime);
     // carrierSampleNode.start(audioContext.currentTime);
 
@@ -527,43 +515,22 @@ module.exports = function (audioContext, modulatorBuffer, options) {
   var vocoding;
   generateVocoderBands( 55, 7040, 28 );
   initBandpassFilters();
-  return function () {
-    // if (this.event)
-    //   this.event.preventDefault();
-
-    // if (vocoding) {
-    //   if (modulatorNode) modulatorNode.stop(0);
-    //   shutOffCarrier();
-    //   vocoding = false;
-    //   liveInput = false;
-    //   cancelVocoderUpdates();
-    //   // if (endOfModulatorTimer) window.clearTimeout(endOfModulatorTimer);
-    //   endOfModulatorTimer = 0;
-    //   return;
-    // }
-
-    createCarriersAndPlay( carrierInput );
-
-    vocoding = true;
+  createCarriersAndPlay( carrierInput );
+  return function (modulatorBuffer, options) {
+    console.log(options)
+    oscillatorGain.gain.value = +options.oscillatorGain
+    noiseGain.gain.value = +options.noiseGain
 
     modulatorNode = audioContext.createBufferSource();
     modulatorNode.buffer = modulatorBuffer;
     modulatorGain = audioContext.createGain();
-    modulatorGain.gain.value = modulatorGainValue;
+    modulatorGain.gain.value = +options.modulatorGain;
     modulatorNode.connect( modulatorGain );
     modulatorGain.connect( modulatorInput );
     modulatorNode.start(audioContext.currentTime);
     // console.log('whooooo')
 
-    var interval = setInterval(function () {
-      oscillatorNode.frequency.value = [440, 493.88, 523.25, 587.33, 659.25, 698.46][~~(Math.random() * 6)] / 4
-      console.log('yep')
-    }, 500)
 
-    setTimeout(function () {
-      clearInterval(interval)
-      console.log('stahp it')
-    }, modulatorNode.buffer.duration * 1000 + 100)
     // window.requestAnimationFrame( updateAnalysers );
     // endOfModulatorTimer = window.setTimeout( vocode, modulatorNode.buffer.duration * 1000 + 20 );
   }
