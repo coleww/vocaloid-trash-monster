@@ -10,8 +10,8 @@
     <div class="full-width text-container">
       <input type="text" class="text-lyric" placeholder="type your lyric here!" value="one two three four i declare a thumb war">
     </div>
-    <div class="full-width step-sequencer">
-      step sequencer
+    <div class="full-width piano-roll">
+
     </div>
     <div class="half-width controls">
       <form class="js-synth-controls">
@@ -24,7 +24,7 @@
       <form class="js-voice-controls">
 
         <label>pitch: <input name="pitch" type="range" value="50" min="1" max="100" step="0.25"></label><br />
-        <label>speed: <input name="speed" type="range" value="175" min="1" max="500" step="1"></label><br />
+        <label>speed: <input name="speed" type="range" value="100" min="1" max="500" step="1"></label><br />
         <label>word gap: <input name="wordgap" type="range" value="0" min="0" max="100" step="1"></label>
       </form>
     </div>
@@ -34,25 +34,25 @@
     </div>
     <div class="half-width controls">
       <form class="js-main-controls">
-        <input type="number" name="bpm" value="120" min="1" max="1000">
-        <select name="tonic">
+        <input type="number" class="bpm-select" name="bpm" value="120" min="1" max="1000">
+        <select name="tonic" class="tonic-select">
           <option value="C" selected>C</option>
           <option value="C#">C#</option>
           <option value="D">D</option>
-          <option value="Eb">Eb</option>
+          <option value="D#">Eb</option>
           <option value="F">F</option>
           <option value="F#">F#</option>
           <option value="G">G</option>
-          <option value="Ab">Ab</option>
+          <option value="G#">Ab</option>
           <option value="A">A</option>
-          <option value="Bb">Bb</option>
+          <option value="A#">Bb</option>
           <option value="B">B</option>
         </select>
-        <select name="key">
-          <option value="Major" selected>Major</option>
-          <option value="Minor">Minor</option>
-          <option value="PentMaj">Pent Maj</option>
-          <option value="PentMin">Pent Min</option>
+        <select name="key" class="scale-select">
+          <option value="major" selected>Major</option>
+          <option value="minor">Minor</option>
+          <option value="pentMaj">Pent Maj</option>
+          <option value="pentMin">Pent Min</option>
         </select>
       </form>
     </div>
