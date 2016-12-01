@@ -517,7 +517,6 @@ module.exports = function (audioContext, synth, destination) {
   initBandpassFilters();
   createCarriersAndPlay( carrierInput );
   return function (modulatorBuffer, options) {
-    console.log(options)
     oscillatorGain.gain.value = +options.oscillatorGain
     noiseGain.gain.value = +options.noiseGain
 

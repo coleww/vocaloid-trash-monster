@@ -32,6 +32,14 @@ input[type="number"] {
   width: 500px;
 }
 
+.beat-marker {
+  height: 10px;
+}
+
+.on-beat {
+  background-color: red;
+}
+
 table {
   border-collapse: collapse;
 }

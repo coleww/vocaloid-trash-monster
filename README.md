@@ -1,9 +1,15 @@
 # VOCALOLOID
 ------------------
 
-- just TTS the text
-- control the text
-- just vocode the text against a pre-set melody
-- save the dang thing
-- edit the melody
-- control the synth
+making a trash vocaloid child with text-to-speech and a vocoder
+
+
+
+utils/vocoder.js is a hacked up, browserifiable version of [Chris Wilson's Vocoder](https://github.com/cwilso/Vocoder)
+
+# DEVELOPMENT
+
+- `npm install`
+- in one terminal: `npm run watch` 
+- in another terminal: `cd www && python -m SimpleHTTPServer`
+- visit localhost:8000
